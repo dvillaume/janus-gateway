@@ -52,4 +52,10 @@ general: {
 	# engine (default 32000 milliseconds)
 	sip_timer_t1x64 = 32000
 
+	# Get password from web_session_id by requestion a private url
+	# Please take care to use url with restricted access
+	get_sip_passwd_from_url = false
+	#sip_passwd_url = "https://"
+
 }
+
