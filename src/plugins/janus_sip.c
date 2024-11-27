@@ -3992,7 +3992,7 @@ static void *janus_sip_handler(void *data) {
 			if(secret) {
 				JANUS_LOG(LOG_VERB, "Updating credentials (secret) for authenticating the INVITE\n");
 				if(secret_encryption_key) {
-					secret_text = decrypt_aes_secret(secret_encryption_key, json_string_value(secret));
+					const char *secret_text secret_text = decrypt_aes_secret(secret_encryption_key, json_string_value(secret));
 					if(secret_text == NULL) {
 						JANUS_LOG(LOG_ERR, "Error decrypting secret\n");
 						error_code = JANUS_SIP_ERROR_INVALID_ELEMENT;
