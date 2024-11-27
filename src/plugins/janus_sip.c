@@ -3377,7 +3377,7 @@ static void *janus_sip_handler(void *data) {
 			session->account.sips = sips;
 			session->account.rfc2543_cancel = rfc2543_cancel;
 			session->account.username = g_strdup(user_id);
-			session->account.authuser = g_strdup(authuser_text ? authuser_text : user_id);
+			session->account.authuser = g_strdup(authuser_text ? authuser_text : user_id);  /// username_text
 			session->account.secret = secret_text ? g_strdup(secret_text) : NULL;
 			session->account.secret_type = secret_type;
 			if(display_name_text) {
@@ -3466,7 +3466,7 @@ static void *janus_sip_handler(void *data) {
 				g_snprintf(ttl_text, sizeof(ttl_text), "%d", ttl);
 				/* Send the REGISTER */
 				nua_register(session->stack->s_nh_r,
-					NUTAG_M_USERNAME(session->account.authuser),
+					NUTAG_M_USERNAME("toto"),  /// user_id ?
 					NUTAG_M_DISPLAY(session->account.display_name),
 					SIPTAG_FROM_STR(username_text),
 					SIPTAG_TO_STR(username_text),
