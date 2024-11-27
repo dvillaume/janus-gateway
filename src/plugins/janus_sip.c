@@ -910,6 +910,10 @@ static gboolean query_contact_header = FALSE;
 static GThread *handler_thread;
 static void *janus_sip_handler(void *data);
 static void janus_sip_hangup_media_internal(janus_plugin_session *handle);
+static void hex_to_bytes(const char *hex, unsigned char *bytes, size_t len);
+static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex);
+
+
 
 typedef struct janus_sip_message {
 	janus_plugin_session *handle;
@@ -2904,7 +2908,7 @@ static void janus_sip_hangup_media_internal(janus_plugin_session *handle) {
 }
 
 /* Function to convert a hexadecimal string to a byte array */
-void hex_to_bytes(const char *hex, unsigned char *bytes, size_t len) {
+static void hex_to_bytes(const char *hex, unsigned char *bytes, size_t len) {
     for (size_t i = 0; i < len; i++) {
         sscanf(hex + 2 * i, "%2hhx", &bytes[i]);
     }
@@ -2912,7 +2916,7 @@ void hex_to_bytes(const char *hex, unsigned char *bytes, size_t len) {
 
 
 /* Main function to decrypt a hexadecimal string using AES-256-ECB */
-char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex) {
+static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex) {
     /* AES-256 uses a 32-byte key */
     unsigned char key[32];
     size_t ciphertext_len = strlen(ciphertext_hex) / 2;
