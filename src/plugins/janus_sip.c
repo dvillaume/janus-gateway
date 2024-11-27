@@ -2114,13 +2114,13 @@ int janus_sip_init(janus_callbacks *callback, const char *config_path) {
 		}
 
 		item = janus_config_get(config, config_general, janus_config_type_item, "secret_encryption_key");
-		if(item && item->value)
+		if(item && item->value) {
 			secret_encryption_key = g_strdup(item->value);
 			if (strlen(secret_encryption_key) != 64) {
 				JANUS_LOG(LOG_ERR, "Invalid secret_encryption_key length: %d (must be 64 characters)\n", strlen(secret_encryption_key));
 				return -1;
 			}
-
+		}
 		janus_config_destroy(config);
 	}
 	config = NULL;
