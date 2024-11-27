@@ -4006,7 +4006,7 @@ static void *janus_sip_handler(void *data) {
 
 				if(!session->helper) {
 					g_free(session->account.secret);
-					session->account.secret = secret_text
+					session->account.secret = secret_text;
 					session->account.secret_type = janus_sip_secret_type_plaintext;
 				} else if(session->master != NULL) {
 					g_free(session->master->account.secret);
