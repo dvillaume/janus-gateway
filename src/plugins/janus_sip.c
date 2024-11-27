@@ -904,7 +904,6 @@ static int sip_timer_t1x64 = JANUS_DEFAULT_SIP_TIMER_T1X64;
 static uint16_t dtmf_keys[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '#', 'A', 'B', 'C', 'D'};
 static char *secret_encryption_key = NULL;
 
-
 static gboolean query_contact_header = FALSE;
 
 static GThread *handler_thread;
@@ -912,8 +911,6 @@ static void *janus_sip_handler(void *data);
 static void janus_sip_hangup_media_internal(janus_plugin_session *handle);
 static void hex_to_bytes(const char *hex, unsigned char *bytes, size_t len);
 static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex);
-
-
 
 typedef struct janus_sip_message {
 	janus_plugin_session *handle;
@@ -2914,7 +2911,6 @@ static void hex_to_bytes(const char *hex, unsigned char *bytes, size_t len) {
     }
 }
 
-
 /* Main function to decrypt a hexadecimal string using AES-256-ECB */
 static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex) {
     /* AES-256 uses a 32-byte key */
@@ -2930,7 +2926,7 @@ static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex)
     /* Initialize decryption */
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
     if (!ctx) {
-        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to create EVP context");
+        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to create EVP context\n");
         return NULL;
     }
 
@@ -2938,20 +2934,20 @@ static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex)
     int len = 0, plaintext_len = 0;
 
     if (EVP_DecryptInit_ex(ctx, EVP_aes_256_ecb(), NULL, key, NULL) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to initialize decryption");
+        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to initialize decryption\n");
         EVP_CIPHER_CTX_free(ctx);
         return NULL;
     }
 
     if (EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to decrypt data");
+        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to decrypt data\n");
         EVP_CIPHER_CTX_free(ctx);
         return NULL;
     }
     plaintext_len = len;
 
     if (EVP_DecryptFinal_ex(ctx, plaintext + len, &len) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to finalize decryption");
+        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to finalize decryption\n");
         EVP_CIPHER_CTX_free(ctx);
         return NULL;
     }
@@ -4000,18 +3996,16 @@ static void *janus_sip_handler(void *data) {
 						g_snprintf(error_cause, 512, "Error decrypting secret");
 						goto error;
 					}
-
 				} else {
 					secret_text = g_strdup(json_string_value(secret));
 				}
-
 				if(!session->helper) {
 					g_free(session->account.secret);
-					session->account.secret = g_strdup(secret_text);;
+					session->account.secret = g_strdup(secret_text);
 					session->account.secret_type = janus_sip_secret_type_plaintext;
 				} else if(session->master != NULL) {
 					g_free(session->master->account.secret);
-					session->master->account.secret = g_strdup(secret_text);;
+					session->master->account.secret = g_strdup(secret_text);
 					session->master->account.secret_type = janus_sip_secret_type_plaintext;
 				}
 			} else if(ha1_secret) {
