@@ -2930,7 +2930,7 @@ static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex)
     /* Initialize decryption */
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
     if (!ctx) {
-        JANUS_LOG(LOG_WARN, "[SIP-%s] decrypt_aes_secret - Failed to create EVP context", session->account.username);
+        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to create EVP context");
         return NULL;
     }
 
@@ -2938,20 +2938,20 @@ static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex)
     int len = 0, plaintext_len = 0;
 
     if (EVP_DecryptInit_ex(ctx, EVP_aes_256_ecb(), NULL, key, NULL) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-%s] decrypt_aes_secret -Failed to initialize decryption", session->account.username);
+        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to initialize decryption");
         EVP_CIPHER_CTX_free(ctx);
         return NULL;
     }
 
     if (EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-%s] decrypt_aes_secret - Failed to decrypt data", session->account.username);
+        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to decrypt data");
         EVP_CIPHER_CTX_free(ctx);
         return NULL;
     }
     plaintext_len = len;
 
     if (EVP_DecryptFinal_ex(ctx, plaintext + len, &len) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-%s] decrypt_aes_secret - Failed to finalize decryption", session->account.username);
+        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to finalize decryption");
         EVP_CIPHER_CTX_free(ctx);
         return NULL;
     }
