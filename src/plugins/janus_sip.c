@@ -2117,7 +2117,7 @@ int janus_sip_init(janus_callbacks *callback, const char *config_path) {
 		if(item && item->value) {
 			secret_encryption_key = g_strdup(item->value);
 			if (strlen(secret_encryption_key) != 64) {
-				JANUS_LOG(LOG_ERR, "Invalid secret_encryption_key length: %d (must be 64 characters)\n", strlen(secret_encryption_key));
+				JANUS_LOG(LOG_ERR, "Invalid secret_encryption_key length: %zu (must be 64 characters)\n", strlen(secret_encryption_key));
 				return -1;
 			}
 		}
