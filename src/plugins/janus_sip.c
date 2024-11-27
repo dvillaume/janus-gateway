@@ -2906,59 +2906,59 @@ static void janus_sip_hangup_media_internal(janus_plugin_session *handle) {
 
 /* Function to convert a hexadecimal string to a byte array */
 static void hex_to_bytes(const char *hex, unsigned char *bytes, size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        sscanf(hex + 2 * i, "%2hhx", &bytes[i]);
-    }
+	for (size_t i = 0; i < len; i++) {
+		sscanf(hex + 2 * i, "%2hhx", &bytes[i]);
+	}
 }
 
 /* Main function to decrypt a hexadecimal string using AES-256-ECB */
 static char *decrypt_aes_secret(const char *key_hex, const char *ciphertext_hex) {
-    /* AES-256 uses a 32-byte key */
-    unsigned char key[32];
-    size_t ciphertext_len = strlen(ciphertext_hex) / 2;
+	/* AES-256 uses a 32-byte key */
+	unsigned char key[32];
+	size_t ciphertext_len = strlen(ciphertext_hex) / 2;
 
-    /* Buffer for ciphertext */
-    unsigned char ciphertext[1024]; // Maximum size for ciphertext
+	/* Buffer for ciphertext */
+	unsigned char ciphertext[1024]; // Maximum size for ciphertext
 
-    hex_to_bytes(key_hex, key, sizeof(key));
-    hex_to_bytes(ciphertext_hex, ciphertext, ciphertext_len);
+	hex_to_bytes(key_hex, key, sizeof(key));
+	hex_to_bytes(ciphertext_hex, ciphertext, ciphertext_len);
 
-    /* Initialize decryption */
-    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
-    if (!ctx) {
-        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to create EVP context\n");
-        return NULL;
-    }
+	/* Initialize decryption */
+	EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+	if (!ctx) {
+		JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to create EVP context\n");
+		return NULL;
+	}
 
-    unsigned char plaintext[1024]; // Buffer for plaintext
-    int len = 0, plaintext_len = 0;
+	unsigned char plaintext[1024]; // Buffer for plaintext
+	int len = 0, plaintext_len = 0;
 
-    if (EVP_DecryptInit_ex(ctx, EVP_aes_256_ecb(), NULL, key, NULL) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to initialize decryption\n");
-        EVP_CIPHER_CTX_free(ctx);
-        return NULL;
-    }
+	if (EVP_DecryptInit_ex(ctx, EVP_aes_256_ecb(), NULL, key, NULL) != 1) {
+		JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to initialize decryption\n");
+		EVP_CIPHER_CTX_free(ctx);
+		return NULL;
+	}
 
-    if (EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to decrypt data\n");
-        EVP_CIPHER_CTX_free(ctx);
-        return NULL;
-    }
-    plaintext_len = len;
+	if (EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len) != 1) {
+		JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to decrypt data\n");
+		EVP_CIPHER_CTX_free(ctx);
+		return NULL;
+	}
+	plaintext_len = len;
 
-    if (EVP_DecryptFinal_ex(ctx, plaintext + len, &len) != 1) {
-        JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to finalize decryption\n");
-        EVP_CIPHER_CTX_free(ctx);
-        return NULL;
-    }
-    plaintext_len += len;
+	if (EVP_DecryptFinal_ex(ctx, plaintext + len, &len) != 1) {
+		JANUS_LOG(LOG_WARN, "[SIP-decrypt_aes_secret] Failed to finalize decryption\n");
+		EVP_CIPHER_CTX_free(ctx);
+		return NULL;
+	}
+	plaintext_len += len;
 
-    /* Free the context */
-    EVP_CIPHER_CTX_free(ctx);
+	/* Free the context */
+	EVP_CIPHER_CTX_free(ctx);
 
-    /* Convert to string and return */
-    plaintext[plaintext_len] = '\0';
-    return g_strdup((char *)plaintext);
+	/* Convert to string and return */
+	plaintext[plaintext_len] = '\0';
+	return g_strdup((char *)plaintext);
 }
 
 /* Thread to handle incoming messages */
@@ -4534,8 +4534,8 @@ static void *janus_sip_handler(void *data) {
 			char custom_headers[2048];
 			janus_sip_parse_custom_headers(root, (char *)&custom_headers, sizeof(custom_headers));
 			nua_respond(session->stack->s_nh_i, response_code, sip_status_phrase(response_code),
-				    TAG_IF(strlen(custom_headers) > 0, SIPTAG_HEADER_STR(custom_headers)),
-				    TAG_END());
+					TAG_IF(strlen(custom_headers) > 0, SIPTAG_HEADER_STR(custom_headers)),
+					TAG_END());
 			janus_mutex_lock(&session->mutex);
 			/* Also notify event handlers */
 			if(notify_events && gateway->events_is_enabled()) {
