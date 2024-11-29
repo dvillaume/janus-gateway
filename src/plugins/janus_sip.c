@@ -3323,9 +3323,9 @@ static void *janus_sip_handler(void *data) {
 				janus_mutex_unlock(&sessions_mutex);
 			}
 
+			json_t *header_prefixes_json = json_object_get(root, "incoming_header_prefixes");
 			// MELMELMEL
 			JANUS_LOG(LOG_ERR, "Custom headers to intercept: %s\n", json_dumps(header_prefixes_json, JSON_ENCODE_ANY));
-			json_t *header_prefixes_json = json_object_get(root, "incoming_header_prefixes");
 			if(header_prefixes_json) {
 				size_t index = 0;
 				json_t *value = NULL;
