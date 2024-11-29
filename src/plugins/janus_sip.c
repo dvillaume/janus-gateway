@@ -5644,7 +5644,7 @@ void janus_sip_sofia_callback(nua_event_t event, int status, char const *phrase,
 				json_object_set_new(calling, "headers", headers);
 			}
 			//MELMELMEL
-			JANUS_LOG(LOG_ERR, "calling: %s\n", calling);
+			JANUS_LOG(LOG_ERR, "calling: %s\n", json_dumps(calling, JSON_INDENT(3)));
 			char *referred_by = NULL;
 			if(sip->sip_referred_by) {
 				char *rby_text = sip_header_as_string(session->stack->s_home, (const sip_header_t *)sip->sip_referred_by);
