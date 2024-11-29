@@ -3092,7 +3092,8 @@ static void *janus_sip_handler(void *data) {
 				if(header_prefixes_json) {
 					size_t index = 0;
 					json_t *value = NULL;
-					JANUS_LOG(LOG_VERB, "Custom headers to intercept: %s\n", json_dumps(header_prefixes_json, JSON_ENCODE_ANY));
+					// MELMELMEL
+					JANUS_LOG(LOG_ERR, "Custom headers to intercept: %s\n", json_dumps(header_prefixes_json, JSON_ENCODE_ANY));
 					json_array_foreach(header_prefixes_json, index, value) {
 						const char *header_prefix = json_string_value(value);
 						if(header_prefix)
