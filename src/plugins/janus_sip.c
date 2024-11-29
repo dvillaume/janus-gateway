@@ -1629,7 +1629,7 @@ static json_t *janus_sip_get_incoming_headers(const sip_t *sip, const janus_sip_
 	while(unknown_header != NULL) {
 		GList *temp = session->incoming_header_prefixes;
 		//MELMELMEL
-		JANUL_LOG(LOG_ERR, "Unknown header: %s\n", unknown_header->un_name);
+		JANUS_LOG(LOG_ERR, "Unknown header: %s\n", unknown_header->un_name);
 		while(temp != NULL) {
 			char *header_prefix = (char *)temp->data;
 			if(header_prefix != NULL && unknown_header->un_name != NULL) {
