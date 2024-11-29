@@ -1276,8 +1276,6 @@ static void janus_sip_session_free(const janus_refcount *session_ref) {
 		session->hangup_reason_header_cause = NULL;
 	}
 	if(session->incoming_header_prefixes) {
-		//MELMELMEL
-		JANUS_LOG(LOG_ERR, "Incoming header prefixes : %p\n", session->incoming_header_prefixes);
 		g_list_free_full(session->incoming_header_prefixes, g_free);
 		session->incoming_header_prefixes = NULL;
 	}
@@ -3091,6 +3089,8 @@ static void *janus_sip_handler(void *data) {
 				}
 				/* Check if custom headers need to be intercepted */
 				json_t *header_prefixes_json = json_object_get(root, "incoming_header_prefixes");
+				// MELMELMEL
+				JANUS_LOG(LOG_ERR, "Custom headers to intercept: %s\n", json_dumps(header_prefixes_json, JSON_ENCODE_ANY));
 				if(header_prefixes_json) {
 					size_t index = 0;
 					json_t *value = NULL;
