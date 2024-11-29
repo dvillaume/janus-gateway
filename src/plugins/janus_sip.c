@@ -3016,7 +3016,7 @@ static void *janus_sip_handler(void *data) {
 
 		if(!strcasecmp(request_text, "register")) {
 			//MELMELMEL
-			JANUS_LOG(LOG_ERR, "Request: %s\n", request_text);
+			JANUS_LOG(LOG_ERR, "root: %s\n", json_dumps(root, JSON_ENCODE_ANY));
 			/* Send a REGISTER */
 			JANUS_VALIDATE_JSON_OBJECT(root, register_parameters,
 				error_code, error_cause, TRUE,
